@@ -12,7 +12,24 @@
   <button id="submit">guess!</button>
 </body>
   <script defer>
-
-  	
+  var secretNumber = null;
+  secretNumber = function(){
+      return Math.floor(Math.random()*10)+1;
+  }();
+  document.querySelector('#submit').addEventListener('click',function(){
+      var chosenNumber = parseInt(document.querySelector('#num').value);
+      var text = '';
+      if(chosenNumber === secretNumber){
+          text = 'You got it, the number was '+secretNumber+'!';
+      } else if(chosenNumber > secretNumber){
+          text = 'Too high!';
+      } else if(chosenNumber < secretNumber){
+          text = 'Too low!';
+      } else {
+          text = 'Invalid input!';
+      }
+      document.querySelector('#num').value='';
+      document.querySelector('#result').innerHTML = text;
+  });
   </script>
 </html>

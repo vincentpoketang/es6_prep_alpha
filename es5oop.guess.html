@@ -13,8 +13,52 @@
   <button id="submit">guess!</button>
 </body>
   <script defer>
- 
-
-  	
+    function View(submitHandler){
+        var self = this;
+        this.button = $("#submit");
+        this.input = $("#num");
+        this.display = $("#result");
+        this.submitHandler = submitHandler;
+        this.button.on('click',function(){
+            return self.submitGuess();
+        });
+        this.submitGuess = function(){
+            var chosenNumber = parseInt(this.input.val());
+            console.log(chosenNumber + ' in submit guess');
+            self.submitHandler(chosenNumber);
+        };
+        this.displayResult = function(message){
+            this.display.text(message);
+        };
+    }
+    function Model(){
+        this.secretNumber = Math.floor(Math.random()*10)+1;
+        this.getNumber = function(){
+            return this.secretNumber;
+        }
+    }
+    function App(){
+        var self = this;
+        this.model = new Model();
+        this.view = new View(function(number){
+            return self.handleSubmit(number);
+        });
+        this.handleSubmit = function(chosenNumber){
+            let secretNumber = this.model.getNumber();
+            let text = '';
+            console.log(secretNumber, chosenNumber);
+            if(chosenNumber === secretNumber){
+                text = 'You got it, the number was '+secretNumber+'!';
+            } else if(chosenNumber > secretNumber){
+                text = 'Too high!';
+            } else if(chosenNumber < secretNumber){
+                text = 'Too low!';
+            } else {
+                text = 'Invalid input!';
+            }
+            this.view.displayResult(text);
+        };
+    }
+    var guessingGame = new App();
   </script>
 </html>
