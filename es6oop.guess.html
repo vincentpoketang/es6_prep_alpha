@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>ES6 Basics</title>
+  <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+
+</head>
+<body>
+  <div id="result">Pick a number!</div>
+  <input id="num" placeholder="enter a number">
+  <button id="submit">guess!</button>
+</body>
+  <script defer>
+  class View{
+  	constructor(submitHandler){
+  		this.button = $("#submit");
+  		this.input = $("#num");
+  		this.display = $("#result");
+  		this.submitHandler = submitHandler;
+  		this.button.on('click',()=>{
+  			this.submitGuess();
+  		});
+  	}
+  	submitGuess(){
+  		let chosenNumber = parseInt(this.input.val());
+  		console.log(chosenNumber + ' in submit guess');
+  		this.submitHandler(chosenNumber);
+  	}
+  	displayResult(message){
+  		this.display.text(message);
+  	}
+
+  }
+  class Model{
+  	constructor(){
+  		this.secretNumber = Math.floor(Math.random()*10)+1;
+  	}
+  	getNumber(){
+  		return this.secretNumber;
+  	}
+  }
+  class App{
+  	constructor(){
+  		this.model = new Model();
+  		this.view = new View((number)=>this.handleSubmit(number));
+  	}
+  	handleSubmit(chosenNumber){
+  		let secretNumber = this.model.getNumber();
+  		let text = '';
+  		console.log(secretNumber, chosenNumber);
+	    if(chosenNumber === secretNumber){
+	      text = 'You got it, the number was ${secretNumber}!';
+	    } else if(chosenNumber > secretNumber){
+	      text = 'Too high!';
+	    } else if(chosenNumber < secretNumber){
+	      text = 'Too low!';
+	    } else {
+	      text = 'Invalid input!';
+	    }
+	    this.view.displayResult(text);
+  	}
+  }
+
+  var guessingGame = new App();
+  	
+  </script>
+</html>
